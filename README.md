@@ -2,6 +2,8 @@
 
 This is a collection of scripts for messing around with the code of Nintendo's Super Mario Bros.
 
+Anything not listed under sources/thanks below is released into the public domain and you can use it however you want.
+
 ## usage
 
 Requires [cc65](http://cc65.github.io/cc65/) to assemble.
