@@ -14,6 +14,7 @@ Run `make gg` to get a list of Game Genie codes which you can enter into a real 
 
 ## sources/thanks
 
+- mario.nes is copyright Nintendo, view at your own risk.
 - gamegenie.py by Jarhmander, from https://github.com/Jarhmander/gamegenie (MIT license)
 - smbdis.asm by doppelganger, downloaded from romhacking.net
 - SMBRE.DIS by F.H, downloaded from romhacking.net
