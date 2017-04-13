@@ -9086,7 +9086,7 @@ RunRetainerObj:
 ;--------------------------------
 
 RunNormalEnemies:
-          lda #$00                  ;init sprite attributes
+          lda #%00000000                 ;init sprite attributes
           sta Enemy_SprAttrib,x
           jsr GetEnemyOffscreenBits
           jsr RelativeEnemyPosition
@@ -15128,7 +15128,11 @@ RunSoundSubroutines:
          sta EventMusicQueue
 
 SkipSoundSubroutines:
-          lda #$00               ;clear the sound effects queues
+          ;lda #$00               ;clear the sound effects queues
+
+          tya
+          nop
+
           sta Square1SoundQueue
           sta Square2SoundQueue
           sta NoiseSoundQueue
@@ -15953,7 +15957,7 @@ LoadControlRegs:
 NotECstlM: lda AreaMusicBuffer
            and #%01111101        ;check primary buffer for water music
            beq WaterMus
-           lda #$08              ;this is the default value for all other music
+           lda #$08             ;this is the default value for all other music
            bne AllMus
 WaterMus:  lda #$28              ;this value is used for water music and all other event music
 AllMus:    ldx #$82              ;load contents of other sound regs for square 2

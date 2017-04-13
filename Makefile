@@ -6,3 +6,6 @@ smbdis.o : smbdis.asm
 
 play : smbdis.nes
 	fceux smbdis.nes
+
+gg : smbdis.nes
+	cmp -l mario.nes smbdis.nes | python makegg.py
