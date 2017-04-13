@@ -15128,11 +15128,7 @@ RunSoundSubroutines:
          sta EventMusicQueue
 
 SkipSoundSubroutines:
-          ;lda #$00               ;clear the sound effects queues
-
-          tya
-          nop
-
+          lda #$00               ;clear the sound effects queues
           sta Square1SoundQueue
           sta Square2SoundQueue
           sta NoiseSoundQueue
