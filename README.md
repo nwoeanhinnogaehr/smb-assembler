@@ -4,6 +4,8 @@ This is a collection of scripts for messing around with the code of Nintendo's S
 
 ## usage
 
+Requires [cc65](http://cc65.github.io/cc65/) to assemble.
+
 Modify `smbdis.asm`, then run `make play` (assumes fceux as an emulator, edit the makefile to change it).
 
 Run `make gg` to get a list of Game Genie codes which you can enter into a real console to achieve the same modification.
