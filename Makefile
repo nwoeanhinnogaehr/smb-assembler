@@ -5,7 +5,7 @@ smbdis.o : smbdis.asm
 	ca65 smbdis.asm
 
 play : smbdis.nes
-	fceux smbdis.nes
+	~/tmp/mednafen/src/mednafen smbdis.nes
 
 gg : smbdis.nes
 	cmp -l mario.nes smbdis.nes | python makegg.py
