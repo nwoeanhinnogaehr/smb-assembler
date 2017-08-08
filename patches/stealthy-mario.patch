@@ -1,0 +1,13 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index d3807b8..c3f1ffd 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -5899,7 +5899,7 @@ PlayerMovementSubs:
+            lda Player_State          ;check state of player
+            bne ProcMove              ;if not on the ground, branch
+            lda Up_Down_Buttons       ;load controller bits for up and down
+-           and #%00000100            ;single out bit for down button
++           ora #%00000100            ;single out bit for down button
+ SetCrouch: sta CrouchingFlag         ;store value in crouch flag
+ ProcMove:  jsr PlayerPhysicsSub      ;run sub related to jumping and swimming
+            lda PlayerChangeSizeFlag  ;if growing/shrinking flag set,

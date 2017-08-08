@@ -1,0 +1,13 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index d3807b8..12ddaef 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -6089,7 +6089,7 @@ CheckForJumping:
+         and #A_Button
+         beq NoJump                ;if not, branch to something else
+         and PreviousA_B_Buttons   ;if button not pressed in previous frame, branch
+-        beq ProcJumping
++        bcc ProcJumping
+ NoJump: jmp X_Physics             ;otherwise, jump to something else
+
+ ProcJumping:

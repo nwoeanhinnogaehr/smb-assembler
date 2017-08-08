@@ -1,0 +1,312 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index d3807b8..830a163 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -908,7 +908,6 @@ ExitPause:     rts
+ ;$00 - used for preset value
+
+ SpriteShuffler:
+-               ldy AreaType                ;load level type, likely residual code
+                lda #$28                    ;load preset value which will put it at
+                sta $00                     ;sprite #10
+                ldx #$0e                    ;start at the end of OAM data offsets
+@@ -1201,8 +1200,6 @@ PrintVictoryMessages:
+                bne IncMsgCounter         ;if set, branch to increment message counters
+                lda PrimaryMsgCounter     ;otherwise load primary message counter
+                beq ThankPlayer           ;if set to zero, branch to print first message
+-               cmp #$09                  ;if at 9 or above, branch elsewhere (this comparison
+-               bcs IncMsgCounter         ;is residual code, counter never reaches 9)
+                ldy WorldNumber           ;check world number
+                cpy #World8
+                bne MRetainerMsg          ;if not at world 8, skip to next part
+@@ -1567,9 +1564,6 @@ DisplayIntermediate:
+                beq GameOverInter            ;if so, proceed to display game over screen
+                lda AltEntranceControl       ;otherwise check for mode of alternate entry
+                bne NoInter                  ;and branch if found
+-               ldy AreaType                 ;check if we are on castle level
+-               cpy #$03                     ;and if so, branch (possibly residual)
+-               beq PlayerInter
+                lda DisableIntermediate      ;if this flag is set, skip intermediate lives display
+                bne NoInter                  ;and jump to specific task, otherwise
+ PlayerInter:   jsr DrawPlayer_Intermediate  ;put player in appropriate place for
+@@ -2048,8 +2042,6 @@ WriteBlankMT: jsr PutBlockMetatile     ;do a sub to write blank metatile to vram
+
+ ReplaceBlockMetatile:
+        jsr WriteBlockMetatile    ;write metatile to vram buffer to replace block object
+-       inc Block_ResidualCounter ;increment unused counter (residual code)
+-       dec Block_RepFlag,x       ;decrement flag (residual code)
+        rts                       ;leave
+
+ DestroyBlockMetatile:
+@@ -2232,7 +2224,6 @@ Palette1_MTiles:
+   .byte $24, $47, $24, $47 ;half brick (???)
+   .byte $86, $8a, $87, $8b ;water pipe top
+   .byte $8e, $91, $8f, $92 ;water pipe bottom
+-  .byte $24, $2f, $24, $3d ;flag ball (residual object)
+
+ Palette2_MTiles:
+   .byte $24, $24, $24, $35 ;cloud left
+@@ -2778,8 +2769,6 @@ ISpr0Loop:   lda Sprite0Data,y
+              sta Sprite_Data,y
+              dey
+              bpl ISpr0Loop
+-             jsr DoNothing2            ;these jsrs doesn't do anything useful
+-             jsr DoNothing1
+              inc Sprite0HitDetectFlag  ;set sprite #0 check flag
+              inc OperMode_Task         ;increment to next task
+              rts
+@@ -3003,7 +2992,6 @@ TerminateGame:
+       lda WorldNumber       ;otherwise put world number of current
+       sta ContinueWorld     ;player into secret continue function variable
+       lda #$00
+-      asl                   ;residual ASL instruction
+       sta OperMode_Task     ;reset all modes to title screen and
+       sta ScreenTimer       ;leave
+       sta OperMode
+@@ -3046,11 +3034,6 @@ ExTrans:   rts
+
+ ;-------------------------------------------------------------------------------------
+
+-DoNothing1:
+-      lda #$ff       ;this is residual code, this value is
+-      sta $06c9      ;not used anywhere in the program
+-DoNothing2:
+-      rts
+
+ ;-------------------------------------------------------------------------------------
+
+@@ -3791,7 +3774,6 @@ ExitCastle: rts
+
+ WaterPipe:
+       jsr GetLrgObjAttrib     ;get row and lower nybble
+-      ldy AreaObjectLength,x  ;get length (residual code, water pipe is 1 col thick)
+       ldx $07                 ;get row
+       lda #$6b
+       sta MetatileBuffer,x    ;draw something here and below it
+@@ -4225,7 +4207,6 @@ DrawQBlk: lda BrickQBlockMetatiles,y  ;get appropriate metatile for brick (quest
+ GetAreaObjectID:
+               lda $00    ;get value saved from area parser routine
+               sec
+-              sbc #$00   ;possibly residual code
+               tay        ;save to Y
+ ExitDecBlock: rts
+
+@@ -4364,8 +4345,6 @@ GetBlockBufferAddr:
+
+ ;-------------------------------------------------------------------------------------
+
+-;unused space
+-      .byte $ff, $ff
+
+ ;-------------------------------------------------------------------------------------
+
+@@ -5301,8 +5280,6 @@ L_WaterArea3:
+
+ ;-------------------------------------------------------------------------------------
+
+-;unused space
+-      .byte $ff
+
+ ;-------------------------------------------------------------------------------------
+
+@@ -5441,8 +5418,6 @@ ScrollScreen:
+               ora $00                   ;get saved bit here and save in PPU register 1
+               sta Mirror_PPU_CTRL_REG1  ;mirror to be used to set name table later
+               jsr GetScreenPosition     ;figure out where the right side is
+-              lda #$08
+-              sta ScrollIntervalTimer   ;set scroll timer (residual, not used elsewhere)
+               jmp ChkPOffscr            ;skip this part
+ InitScrlAmt:  lda #$00
+               sta ScrollAmount          ;initialize value here
+@@ -5831,7 +5806,6 @@ ExitDeath:
+ FlagpoleSlide:
+              lda Enemy_ID+5           ;check special use enemy slot
+              cmp #FlagpoleFlagObject  ;for flagpole flag object
+-             bne NoFPObj              ;if not found, branch to something residual
+              lda FlagpoleSoundQueue   ;load flagpole sound
+              sta Square1SoundQueue    ;into square 1's sfx queue
+              lda #$00
+@@ -5841,8 +5815,6 @@ FlagpoleSlide:
+              bcs SlidePlayer          ;far enough, and if so, branch with no controller bits set
+              lda #$04                 ;otherwise force player to climb down (to slide)
+ SlidePlayer: jmp AutoControlPlayer    ;jump to player control routine
+-NoFPObj:     inc GameEngineSubroutine ;increment to next routine (this may
+-             rts                      ;be residual code)
+
+ ;-------------------------------------------------------------------------------------
+
+@@ -7026,7 +6998,7 @@ FMiscLoop: lda Misc_State,y        ;get misc object state
+            cpy #$05                ;do this for three slots
+            bne FMiscLoop           ;do this until all slots are checked
+            ldy #$08                ;if no empty slots found, use last slot
+-UseMiscS:  sty JumpCoinMiscOffset  ;store offset of misc object buffer here (residual)
++UseMiscS:
+            rts
+
+ ;-------------------------------------------------------------------------------------
+@@ -7072,8 +7044,6 @@ JCoinRun:  txa
+            sta $00
+            lda #$06                  ;set maximum vertical speed
+            sta $02
+-           lsr                       ;divide by 2 and set
+-           sta $01                   ;as upward movement amount (apparently residual)
+            lda #$00                  ;set A to impose gravity on jumping coin
+            jsr ImposeGravity         ;do sub to move coin vertically and impose gravity on it
+            ldx ObjectOffset          ;get original misc object offset
+@@ -7674,9 +7644,6 @@ SetXMoveAmt: sty $00                 ;set movement amount here
+ MaxSpdBlockData:
+       .byte $06, $08
+
+-ResidualGravityCode:
+-      ldy #$00       ;this part appears to be residual,
+-      .byte $2c        ;no code branches or jumps to it...
+
+ ImposeGravityBlock:
+       ldy #$01       ;set offset for maximum speed
+@@ -7701,9 +7668,7 @@ MovePlatformUp:
+            ldy Enemy_ID,x  ;get enemy object identifier
+            inx             ;increment offset for enemy object
+            lda #$05        ;load default value here
+-           cpy #$29        ;residual comparison, object #29 never executes
+            bne SetDplSpd   ;this code, thus unconditional branch here
+-           lda #$09        ;residual code
+ SetDplSpd: sta $00         ;save downward movement amount here
+            lda #$0a        ;save upward movement amount here
+            sta $01
+@@ -9611,7 +9576,6 @@ NotDefB: lda #$e8                   ;set bullet bill's horizontal speed
+
+ SwimCCXMoveData:
+       .byte $40, $80
+-      .byte $04, $04 ;residual data, not used
+
+ MoveSwimmingCheepCheep:
+         lda Enemy_State,x         ;check cheep-cheep's enemy object state
+@@ -9743,7 +9707,6 @@ SkpFSte:  clc
+           sta FirebarSpinState_High,x
+ SetupGFB: sta $ef                     ;save high byte of spinning thing, modified or otherwise
+           jsr RelativeEnemyPosition   ;get relative coordinates to screen
+-          jsr GetFirebarPosition      ;do a sub here (residual, too early to be used now)
+           ldy Enemy_SprDataOffset,x   ;get OAM data offset
+           lda Enemy_Rel_YPos          ;get relative vertical coordinate
+           sta Sprite_Y_Position,y     ;store as Y in OAM data
+@@ -9975,9 +9938,7 @@ AddCCF: cmp #$08                   ;if result or two's compliment greater than e
+         lsr
+         lsr
+         tay
+-BPGet:  lda FlyCCBPriority,y       ;load bg priority data and store (this is very likely
+-        sta Enemy_SprAttrib,x      ;broken or residual code, value is overwritten before
+-        rts                        ;drawing it next frame), then leave
++BPGet:          rts                        ;drawing it next frame), then leave
+
+ ;--------------------------------
+ ;$00 - used to hold horizontal difference
+@@ -10409,7 +10370,6 @@ DrawFlameLoop:
+          pha
+          bcc M3FOfs                 ;branch if carry not set
+          lda #$f8                   ;otherwise move sprite offscreen, this part likely
+-         sta Sprite_Y_Position+12,y ;residual since flame is only made of three sprites
+ M3FOfs:  pla                        ;get bits from stack
+          lsr                        ;move d1 to carry and move bits back to stack
+          pha
+@@ -10661,7 +10621,6 @@ FirebarSpin:
+       sta $07                     ;save spinning speed here
+       lda FirebarSpinDirection,x  ;check spinning direction
+       bne SpinCounterClockwise    ;if moving counter-clockwise, branch to other part
+-      ldy #$18                    ;possibly residual ldy
+       lda FirebarSpinState_Low,x
+       clc                         ;add spinning speed to what would normally be
+       adc $07                     ;the horizontal speed
+@@ -10671,7 +10630,6 @@ FirebarSpin:
+       rts
+
+ SpinCounterClockwise:
+-      ldy #$08                    ;possibly residual ldy
+       lda FirebarSpinState_Low,x
+       sec                         ;subtract spinning speed to what would normally be
+       sbc $07                     ;the horizontal speed
+@@ -10982,7 +10940,6 @@ ExDPl: rts                          ;leave
+
+ RightPlatform:
+        jsr MoveEnemyHorizontally     ;move platform with current horizontal speed, if any
+-       sta $00                       ;store saved value here (residual code)
+        lda PlatformCollisionFlag,x   ;check collision flag, if no collision between player
+        bmi ExRPl                     ;and platform, branch ahead, leave speed unaltered
+        lda #$10
+@@ -11072,8 +11029,6 @@ ExScrnBd: rts                     ;leave
+
+ ;-------------------------------------------------------------------------------------
+
+-;some unused space
+-      .byte $ff, $ff, $ff
+
+ ;-------------------------------------------------------------------------------------
+ ;$01 - enemy buffer offset
+@@ -13112,8 +13067,6 @@ RetYC: and #%00001111              ;and mask out high nybble
+
+ ;-------------------------------------------------------------------------------------
+
+-;unused byte
+-      .byte $ff
+
+ ;-------------------------------------------------------------------------------------
+ ;$00 - offset to vine Y coordinate adder
+@@ -13862,7 +13815,6 @@ CheckToAnimateEnemy:
+       ldy #$00
+       cmp #$15                 ;check for mushroom retainer/princess object
+       bne CheckForSecondFrame  ;which uses different code here, branch if not found
+-      iny                      ;residual instruction
+       lda WorldNumber          ;are we on world 8?
+       cmp #World8
+       bcs CheckDefeatedState   ;if so, leave the offset alone (use princess)
+@@ -13873,7 +13825,6 @@ CheckToAnimateEnemy:
+
+ CheckForSecondFrame:
+       lda FrameCounter            ;load frame counter
+-      and EnemyAnimTimingBMask,y  ;mask it (partly residual, one byte not ever used)
+       bne CheckDefeatedState      ;branch if timing is off
+
+ CheckAnimationStop:
+@@ -14183,7 +14134,6 @@ ExDBlk: rts
+ DrawBrickChunks:
+          lda #$02                   ;set palette bits here
+          sta $00
+-         lda #$75                   ;set tile number for ball (something residual, likely)
+          ldy GameEngineSubroutine
+          cpy #$05                   ;if end-of-level routine running,
+          beq DChunks                ;use palette and tile number assigned
+@@ -15058,8 +15008,6 @@ SetHFAt: ora $04                    ;add other OAM attributes if necessary
+
+ ;-------------------------------------------------------------------------------------
+
+-;unused space
+-        .byte $ff, $ff, $ff, $ff, $ff, $ff
+
+ ;-------------------------------------------------------------------------------------
+
+@@ -15370,8 +15318,6 @@ PowerUpGrabFreqData:
+       .byte $28, $4a, $50, $4a, $64, $3c, $32, $3c, $32
+       .byte $2c, $24, $3a, $64, $3a, $34, $2c, $22, $2c
+
+-;residual frequency data
+-      .byte $22, $1c, $14
+
+ PUp_VGrow_FreqData:
+       .byte $14, $04, $22, $24, $16, $04, $24, $26 ;used by both
+@@ -15677,7 +15623,6 @@ HandleAreaMusicLoopB:
+
+ FindAreaMusicHeader:
+         ldy #$08                   ;load Y for offset of area music
+-        sty MusicOffset_Square2    ;residual instruction here
+
+ FindEventMusicHeader:
+         iny                       ;increment Y pointer based on previously loaded queue contents
+@@ -16316,9 +16261,6 @@ VictoryMusData:
+       .byte $83, $12, $14, $04, $18, $1a, $1c, $14
+       .byte $26, $22, $1e, $1c, $18, $1e, $22, $0c, $14
+
+-;unused space
+-      .byte $ff, $ff, $ff
+-
+ FreqRegLookupTbl:
+       .byte $00, $88, $00, $2f, $00, $00
+       .byte $02, $a6, $02, $80, $02, $5c, $02, $3a

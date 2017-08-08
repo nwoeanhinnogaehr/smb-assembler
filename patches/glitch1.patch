@@ -1,0 +1,13 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index d3807b8..1c49f94 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -793,7 +793,7 @@ ScreenOff:     sta Mirror_PPU_CTRL_REG2  ;save bits for later but not in registe
+                iny                       ;get offset based on usage
+ InitBuffer:    ldx VRAM_Buffer_Offset,y
+                lda #$00                  ;clear buffer header at last location
+-               sta VRAM_Buffer1_Offset,x
++               sta VRAM_Buffer1_Offset,y
+                sta VRAM_Buffer1,x
+                sta VRAM_Buffer_AddrCtrl  ;reinit address control to $0301
+                lda Mirror_PPU_CTRL_REG2  ;copy mirror of $2001 to register

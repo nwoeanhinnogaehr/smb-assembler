@@ -1,0 +1,17 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index 53f7ddc..abf52d5 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -547,9 +547,9 @@ NoiseSoundQueue       = $fd
+ AreaMusicQueue        = $fb
+ EventMusicQueue       = $fc
+
+-Square1SoundBuffer    = $f1
+-Square2SoundBuffer    = $f2
+-NoiseSoundBuffer      = $f3
++Square1SoundBuffer    = $f7
++Square2SoundBuffer    = $f8
++NoiseSoundBuffer      = $f9
+ AreaMusicBuffer       = $f4
+ EventMusicBuffer      = $07b1
+ PauseSoundBuffer      = $07b2

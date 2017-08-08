@@ -1,0 +1,13 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index 53f7ddc..ad7119d 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -2518,7 +2518,7 @@ RepeatByte:    lda ($00),y               ;load more data from buffer and write t
+                sta PPU_ADDRESS           ;then reinitializes it for some reason
+                sta PPU_ADDRESS
+ UpdateScreen:  ldx PPU_STATUS            ;reset flip-flop
+-               ldy #$00                  ;load first byte from indirect as a pointer
++               ldy #$09                  ;load first byte from indirect as a pointer
+                lda ($00),y
+                bne WriteBufferToScreen   ;if byte is zero we have no further updates to make here
+ InitScroll:    sta PPU_SCROLL_REG        ;store contents of A into scroll registers

@@ -1,0 +1,14 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index d3807b8..f872768 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -5506,8 +5506,8 @@ GameRoutines:
+       .word PlayerEntrance
+       .word PlayerCtrlRoutine
+       .word PlayerChangeSize
+-      .word PlayerInjuryBlink
+       .word PlayerDeath
++      .word PlayerInjuryBlink
+       .word PlayerFireFlower
+
+ ;-------------------------------------------------------------------------------------

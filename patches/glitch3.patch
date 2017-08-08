@@ -1,0 +1,13 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index 53f7ddc..1dcbdd5 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -2482,7 +2482,7 @@ WriteBufferToScreen:
+                lda ($00),y               ;load next byte (second)
+                sta PPU_ADDRESS           ;store low byte of vram address
+                iny
+-               lda ($00),y               ;load next byte (third)
++               lda ($07),y               ;load next byte (third)
+                asl                       ;shift to left and save in stack
+                pha
+                lda Mirror_PPU_CTRL_REG1  ;load mirror of $2000,

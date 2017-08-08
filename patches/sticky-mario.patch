@@ -1,0 +1,13 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index d3807b8..d61bd84 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -5928,7 +5928,7 @@ OnGroundStateSub:
+          sta PlayerFacingDir        ;otherwise set new facing direction
+ GndMove: jsr ImposeFriction         ;do a sub to impose friction on player's walk/run
+          jsr MovePlayerHorizontally ;do another sub to move player horizontally
+-         sta Player_X_Scroll        ;set returned value as player's movement speed for scroll
++         sta Player_X_Speed        ;set returned value as player's movement speed for scroll
+          rts
+
+ ;--------------------------------
