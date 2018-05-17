@@ -30,9 +30,6 @@
 ;INTERRUPT VECTORS
 
 .segment "VECTORS"
-      ;stupid hack, this should be at the end of the file
-      .byte $1c, $1d, $1d, $1e, $1e, $1f
-
       .word NonMaskableInterrupt
       .word Start
       .word $fff0  ;unused
@@ -16365,3 +16362,5 @@ BrickShatterEnvData:
       .byte $15, $16, $16, $17, $17, $18, $19, $19
       .byte $1a, $1a
 
+; interrupt vectors?
+      .byte $1c, $1d, $1d, $1e, $1e, $1f
