@@ -1,0 +1,13 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index 512d6f1..3c9db5b 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -15713,7 +15713,7 @@ LoadHeader:
+ HandleSquare2Music:
+         dec Squ2_NoteLenCounter  ;decrement square 2 note length
+         bne MiscSqu2MusicTasks   ;is it time for more data?  if not, branch to end tasks
+-        ldy MusicOffset_Square2  ;increment square 2 music offset and fetch data
++        ldx MusicOffset_Square2  ;increment square 2 music offset and fetch data
+         inc MusicOffset_Square2
+         lda (MusicData),y
+         beq EndOfMusicData       ;if zero, the data is a null terminator
