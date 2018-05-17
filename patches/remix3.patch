@@ -1,0 +1,15 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index 512d6f1..978cbf8 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -15749,8 +15749,8 @@ VictoryMLoopBack:
+ Squ2LengthHandler:
+         jsr ProcessLengthData    ;store length of note
+         sta Squ2_NoteLenBuffer
+-        ldy MusicOffset_Square2  ;fetch another byte (MUST NOT BE LENGTH BYTE!)
+-        inc MusicOffset_Square2
++        ;ldy MusicOffset_Square2  ;fetch another byte (MUST NOT BE LENGTH BYTE!)
++        ;inc MusicOffset_Square2
+         lda (MusicData),y
+ 
+ Squ2NoteHandler:
