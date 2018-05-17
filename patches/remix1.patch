@@ -1,0 +1,19 @@
+diff --git a/smbdis.asm b/smbdis.asm
+index 53f7ddc..97fad79 100644
+--- a/smbdis.asm
++++ b/smbdis.asm
+@@ -15693,11 +15692,11 @@ LoadHeader:
+         sta MusicDataLow
+         lda MusicHeaderData+2,y
+         sta MusicDataHigh
+-        lda MusicHeaderData+3,y
++        lda MusicHeaderData+3,x
+         sta MusicOffset_Triangle
+-        lda MusicHeaderData+4,y
++        lda MusicHeaderData+4,x
+         sta MusicOffset_Square1
+-        lda MusicHeaderData+5,y
++        lda MusicHeaderData+5,x
+         sta MusicOffset_Noise
+         sta NoiseDataLoopbackOfs
+         lda #$01                     ;initialize music note counters
