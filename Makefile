@@ -1,11 +1,16 @@
-smbdis.nes : smbdis.o
-	ld65 -t nes --cfg-path /usr/share/cc65/cfg/ -o smbdis.nes smbdis.o
+DISASM_SMB = smbdis.asm
+SMB_O = smbdis.o
+ASM_SMB = smbdis.nes
+MARIO_NES = mario.nes
 
-smbdis.o : smbdis.asm
-	ca65 smbdis.asm
+$(ASM_SMB) : $(SMB_O)
+	ld65 -t nes --cfg-path /usr/share/cc65/cfg/ -o $(ASM_SMB) $(SMB_O)
 
-play : smbdis.nes
-	fceux smbdis.nes
+$(SMB_O) : $(DISASM_SMB)
+	ca65 $(DISASM_SMB)
 
-gg : smbdis.nes
-	cmp -l mario.nes smbdis.nes | python makegg.py
+play : $(ASM_SMB)
+	fceux $(ASM_SMB)
+
+gg : $(ASM_SMB)
+	cmp -l $(MARIO_NES) $(ASM_SMB) | python makegg.py
